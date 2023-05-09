@@ -28,6 +28,25 @@ export const Ticket = () => {
     }, []
   )
 
+  const isDone = () => {
+    if (ticket.date_completed === null) {
+      return <button onClick={markComplete}>Mark Complete</button>
+    } else {
+      return ""
+    }
+  }
+
+  const markComplete = () => {
+    const rightNow = new Date().toISOString().slice(0, 10)
+    const updatedTicket = {
+      ...ticket,
+      date_completed: rightNow,
+      employee: parseInt(ticket.employee.id),
+      customer: parseInt(ticket.customer.id)
+    }
+    updateTicket(updatedTicket).then(() => fetchTicket())
+  }
+
   const deleteTicketEvent = () => {
     deleteTicket(ticketId).then(() => navigate("/"))
   }
@@ -90,7 +109,7 @@ export const Ticket = () => {
           </div>
           {
             isStaff()
-              ? <></>
+              ? isDone()
               : <button onClick={deleteTicketEvent}>Delete</button>
           }
         </footer>

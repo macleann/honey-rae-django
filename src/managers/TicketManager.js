@@ -39,6 +39,15 @@ export const searchTicketsByStatus = (status) => {
     .then(res => res.json())
 }
 
+export const searchTicketsByQuery = (query) => {
+  return fetch(`http://localhost:8000/tickets?q=${query}`, {
+    headers: {
+      Authorization: `Token ${getToken()}`
+    }
+  })
+    .then(res => res.json())
+}
+
 export const updateTicket = (ticket) => {
   return fetch(`http://localhost:8000/tickets/${ticket.id}`, {
     method: "PUT",

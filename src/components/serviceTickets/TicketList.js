@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { isStaff } from "../../utils/isStaff"
 import { TicketCard } from "./TicketCard"
-import { getAllTickets, searchTicketsByStatus } from "../../managers/TicketManager"
+import { getAllTickets, searchTicketsByStatus, searchTicketsByQuery } from "../../managers/TicketManager"
 import "./Tickets.css"
 
 export const TicketList = () => {
@@ -26,7 +26,13 @@ export const TicketList = () => {
 
   const toShowOrNotToShowTheButton = () => {
     if (isStaff()) {
-      return ""
+      return <input className="actions__search"
+        type="text"
+        placeholder="Search for a ticket..."
+        onChange={(evt) => {
+          searchTicketsByQuery(evt.target.value).then((res) => setTickets(res))
+        }
+        } />
     }
     else {
       return <button className="actions__create"
@@ -40,6 +46,8 @@ export const TicketList = () => {
 
   return <>
     <div>
+      <button onClick={() => filterTickets("unclaimed")}>Show Unclaimed</button>
+      <button onClick={() => filterTickets("inprogress")}>Show In Progress</button>
       <button onClick={() => filterTickets("done")}>Show Done</button>
       <button onClick={() => filterTickets("all")}>Show All</button>
     </div>
